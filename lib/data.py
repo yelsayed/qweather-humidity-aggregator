@@ -58,7 +58,10 @@ def process_result(
         weather_results.append(weather_result)
 
 
-def aggregate_weather_data():
+def aggregate_weather_data() -> Dict[str, List[WeatherResult]]:
+    """
+    Aggregates all the weather data for the next 3 days into one data structure
+    """
     results: Dict[str, List[WeatherResult]] = collections.defaultdict(list)
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_humidity = {
@@ -77,10 +80,10 @@ def aggregate_weather_data():
     return results
 
 
-def get_top_location(data: Dict[str, List[WeatherResult]]) -> Tuple[str, WeatherResult]:
+def get_top_location(data: Dict[str, List[WeatherResult]]) \
+        -> Tuple[str, WeatherResult]:
     """
-    We need to go through all the results and get the top location and value
-    for each time and then get the top time which will contain the top location.
+    Gets the locations with the top humidity from the aggregrated data.
     """
     top_results: Dict[str, WeatherResult] = {}
 
